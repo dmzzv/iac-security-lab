@@ -6,6 +6,27 @@ on:
   pull_request:
 
 jobs:
+  tflint:
+    name: TFLint (non-blocking)
+    runs-on: [self-hosted, Linux, X64]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Show TFLint version
+        run: |
+          tflint --version
+          which tflint
+
+      - name: Initialize TFLint plugins
+        run: |
+          tflint --init
+
+      - name: Run TFLint (visibility only)
+        run: |
+          tflint --chdir=terraform || true
+
   checkov_gate:
     name: Checkov Gate (blocking subset)
     runs-on: [self-hosted, Linux, X64]
