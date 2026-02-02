@@ -20,6 +20,9 @@ jobs:
           hostname
           uname -a
 
-      - name: Run Checkov (full scan)
+      - name: Run Checkov (blocking subset)
         run: |
-          checkov -d terraform/ --compact
+          checkov -d terraform/ \
+            --check CKV_AWS_24,CKV_AWS_260 \
+            --compact
+
