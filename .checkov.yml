@@ -1,0 +1,12 @@
+# Checkov configuration (policy-as-code)
+# This file defines what we BLOCK in CI vs what we only observe.
+
+# CI gate: only critical checks should fail the build
+check:
+  - CKV_AWS_24   # SSH open to world
+  - CKV_AWS_260  # HTTP open to world (direct ingress)
+
+# Lab noise control:
+# In this lab we do not apply infrastructure, so SGs are standalone
+skip-check:
+  - CKV2_AWS_5   # "Security Groups must be attached" (false positive for our lab)

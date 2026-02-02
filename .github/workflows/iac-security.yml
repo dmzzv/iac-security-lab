@@ -23,7 +23,7 @@ jobs:
       - name: Checkov policy gate (block only critical checks)
         run: |
           /home/dmzzv/.local/bin/checkov -d terraform/ \
-            --check CKV_AWS_24,CKV_AWS_260 \
+            --config-file .checkov.yml \
             --compact
 
   checkov_full_scan:
