@@ -1,0 +1,25 @@
+name: IaC Security Pipeline
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+
+jobs:
+  checkov:
+    name: Checkov – IaC Security Scan
+    runs-on: [self-hosted, Linux, X64]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Runner context (debug)
+        run: |
+          whoami
+          hostname
+          uname -a
+
+      - name: Run Checkov (full scan)
+        run: |
+          checkov -d terraform/ --compact
