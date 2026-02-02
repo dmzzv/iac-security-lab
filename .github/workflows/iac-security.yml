@@ -22,7 +22,8 @@ jobs:
 
       - name: Run Checkov (blocking subset)
         run: |
-          checkov -d terraform/ \
+          /home/dmzzv/.local/bin/checkov -d terraform/ \
             --check CKV_AWS_24,CKV_AWS_260 \
             --compact
+
 
