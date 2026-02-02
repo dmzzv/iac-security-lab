@@ -6,24 +6,38 @@ on:
   pull_request:
 
 jobs:
-  checkov:
-    name: Checkov – IaC Security Scan
+  checkov_gate:
+    name: Checkov Gate (blocking subset)
     runs-on: [self-hosted, Linux, X64]
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Runner context (debug)
+      - name: Runner context
         run: |
           whoami
           hostname
           uname -a
 
-      - name: Run Checkov (blocking subset)
+      - name: Checkov policy gate (block only critical checks)
         run: |
           /home/dmzzv/.local/bin/checkov -d terraform/ \
             --check CKV_AWS_24,CKV_AWS_260 \
             --compact
+
+  checkov_full_scan:
+    name: Checkov Full Scan (non-blocking visibility)
+    runs-on: [self-hosted, Linux, X64]
+    needs: checkov_gate
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Full scan (do not fail pipeline)
+        run: |
+          /home/dmzzv/.local/bin/checkov -d terraform/ --compact || true
+
 
 
