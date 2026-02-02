@@ -25,7 +25,12 @@ jobs:
 
       - name: Run TFLint (visibility only)
         run: |
-          tflint --chdir=terraform || true
+          set -o pipefail
+          tflint --chdir=terraform | tee tflint-output.txt || true
+          if [ ! -s tflint-output.txt ]; then
+            echo "TFLint: 0 issue(s) found"
+          fi
+
 
   checkov_gate:
     name: Checkov Gate (blocking subset)
