@@ -70,8 +70,8 @@ jobs:
     runs-on: self-hosted
     needs:
       - tflint
-      - checkov-gate
-      - checkov-full
+      - checkov_gate
+      - checkov_full_scan
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
