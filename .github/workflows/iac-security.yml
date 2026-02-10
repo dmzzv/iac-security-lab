@@ -65,5 +65,20 @@ jobs:
         run: |
           /home/dmzzv/.local/bin/checkov -d terraform/ --compact || true
 
+  trufflehog:
+    name: TruffleHog Secrets Scan (non-blocking)
+    runs-on: self-hosted
+    needs:
+      - tflint
+      - checkov-gate
+      - checkov-full
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run TruffleHog (filesystem scan)
+        run: |
+          echo "Running TruffleHog secrets scan (visibility only)..."
+          /usr/local/bin/trufflehog filesystem . --no-update || true
 
 
